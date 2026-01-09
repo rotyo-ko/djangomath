@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+.vscode
+
+db.sqlite3
+
+.env
+.env.local
+.env.exercise
+
+generate_secret_key_to_env.py
+
+media/

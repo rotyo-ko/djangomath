@@ -1,0 +1,8 @@
+.hover-opacity:hover {
+  opacity: 0.50;
+  transition: opacity 0.2s ease;
+}
+.card {
+  border: none;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}

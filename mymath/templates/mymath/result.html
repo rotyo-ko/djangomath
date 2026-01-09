@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}MyMathStudy|結果{% endblock %}
+
+{% block header %}結果 {% endblock %}
+
+
+{% block content %}
+
+<div class="container card shadow-sm">
+  <div class="d-flex justify-content-center align-items-center my-2"><h3>{{user_result.exam.title}}: {{ user_result.count }}回目</h3></div>
+  <h3 class="text-center">{{ user_result.score}}点</h3>
+  <table class="text-center mx-4 my-2" style="border: 1px solid black; border-collapse: collapse;">
+    
+    <tr>
+      {% for useranswer in useranswers %}
+        <th class="px-0" style="border: 1px solid black;">{{ useranswer.question.number }}問</th>
+      {% endfor %}
+    </tr>
+    <tr>
+      {% for useranswer in useranswers %}
+        <td class="px-0" style="border: 1px solid black; {% if useranswer.correct %} color:green; {% else %} color:red; {% endif %}">
+          
+          <a href="{% url 'mymath:answer' exam_id=user_result.exam.id number=useranswer.question.number %}">
+            {% if useranswer.correct %}〇{% else %}X{% endif %}
+          </a>
+        </td>
+      {% endfor %}
+    </tr>
+    
+  </table>  
+</div>
+<div class="text-center my-2">
+  <a href="{% url 'mymath:index' %}"><h3>戻る</h3></a>
+</div>
+{% endblock %}

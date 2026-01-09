@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}ログインページ{% endblock %}
+
+  {% block head %}
+    <h3 class="mb-3 text-center">ログインページ</h3>
+  {% endblock %}  
+      
+    {% block content %}
+<div class="d-flex justify-content-center align-items-center fs-5" style="min-height: 60vh;">
+  <div class="card p-4 shadow-sm" style="width: 500px;">        
+      <form method="post">
+        {% csrf_token %}
+        <!--
+        <div class="mb-3">
+          <label for="id_username" class="form-label">ユーザー名</label>
+          <input type="text" name="username" id="id_username" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label for="id_password" class="form-label">パスワード</label>
+          <input type="password" name="password" id="id_password" class="form-control">
+        </div>
+        
+        -->
+                  
+        {{ form|crispy }}
+        <div class="text-center mt-3">
+          <button class="btn btn-success btn-lg mt-3 w-100" type="submit">ログイン</button>
+        </div>
+        
+        <div class="mt-2">
+          <h5>アカウント名を忘れてしまった場合は作り直してください</h5>
+        </div>
+        
+      </form>
+  </div>
+</div>
+{% endblock %}

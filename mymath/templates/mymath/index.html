@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+
+  {% block title %}MyMathStudy{% endblock %}
+
+    {% block header %}
+      <h1 class="mb-3 fw-bold text-center">トップページ</h1>
+    {% endblock %}
+    
+    {% block content %}
+    <div class="container mx-2"> 
+    {% for exam in exams %}
+     
+      <a class="hover-opacity" href="{% url 'mymath:exam' exam_id=exam.id number=1 %}"><h3>{{ exam.title }}</h3></a>
+    
+    {% endfor %}
+    
+    </div>
+    {% endblock %}

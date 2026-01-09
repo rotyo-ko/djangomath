@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block title %} {% endblock %}
+
+{% block head %} {% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  
+
+  <h1 class="text-center">{{ question.number}}問目</h1>
+  <div class="card mx-5 p-5 shadow-sm">
+    {{ question.text }}
+    
+    <form method="post">
+      {% csrf_token %}
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><input type="radio" name="question_{{ question.number }}" value=1>{{ question.select_1 }}</li>
+        <li class="list-group-item"><input type="radio" name="question_{{ question.number }}" value=2>{{ question.select_2 }}</li>
+        <li class="list-group-item"><input type="radio" name="question_{{ question.number }}" value=3>{{ question.select_3 }}</li>
+        <li class="list-group-item"><input type="radio" name="question_{{ question.number }}" value=4>{{ question.select_4 }}</li>
+      </ul>
+      <button class="text-center btn btn-primary btn-lg opacity-75 mt-3 w-75 " type="submit">次へ</button>
+    </form>
+    
+    
+
+  
+  
+  </div>
+</div>
+{% endblock %}
