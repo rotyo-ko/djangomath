@@ -2,7 +2,7 @@
 
 ## 使用技術
 
-- Python 3.13以降
+- Python 3.13 以降
 - Django 5.2
 - Bootstrap 5
 - PostgreSQL（開発時）
