@@ -156,7 +156,8 @@ def answer(request, exam_id, number):
         
     return render(request, "mymath/answer.html",
             {"question": question,
-            "useranswer": useranswer})
+            "useranswer": useranswer,
+            "total": total})
 
 
 def result(request, exam_id):

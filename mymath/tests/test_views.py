@@ -396,4 +396,5 @@ class TestResultExamAnonymous(TestCase):
                 self.assertFalse(response3.context["useranswers"][5]["correct"]) # 6問目がFalseか確認
                 self.assertEqual(response3.context["useranswers"][0]["question"]["number"], 1)
         
-            
+
+               

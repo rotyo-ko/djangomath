@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import transaction
 
 
 
@@ -35,9 +35,9 @@ class Exam(models.Model):
 class Question(models.Model):
     ANSWER_CHOICES = [(1, '1'), (2, '2'), (3, '3'), (4, '4')]
     
-    number = models.IntegerField(
+    number = models.PositiveSmallIntegerField(
         verbose_name="問題番号",
-        validators=[MinValueValidator(1), MaxValueValidator(10)],
+        editable=False,
         )
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name="questions")
     text = models.TextField()
@@ -51,8 +51,32 @@ class Question(models.Model):
     #exam_image = models.ImageField(upload_to="questions/exam/", blank=True, null=True)
     #answer_image = models.ImageField(upload_to="questions/answer/", blank=True, null=True)
     #画像導入用
+    class Meta:
+        ordering = ["number"]
+        constraints = [models.UniqueConstraint(
+            fields=["exam", "number"],
+            name="unique_exam_question_number",
+        )]
+    # データベースにユニーク制約を作成 ここでは"exam", "number"をユニークなセットにする
+    def save(self, *args, **kwargs):
+        # number を連番で取得する
+        if self.pk is None:
+            with transaction.atomic():
+                last = Question.objects.filter(
+                    exam=self.exam
+                ).order_by("-number").first()
+                if not last:
+                    self.number =1
+                else:
+                    self.number = last.number + 1
+                super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
+    
+    
     def __str__(self):
         return f"問{self.number}: {self.text[:30]}"
+
 
 
 class UserTestResult(models.Model):
