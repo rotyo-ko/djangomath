@@ -109,7 +109,7 @@ def exam(request, exam_id, number=1):
 
 def answer(request, exam_id, number):
     exam = get_object_or_404(Exam, id=exam_id)
-    questions = Question.objects.filter(exam=exam) #examの問題10個をリストとしてquestionsとして取得
+    questions = Question.objects.filter(exam=exam) #examの問題をリストとしてquestionsとして取得
     total = len(questions)
     if not (1 <= number <= total): # exam()のときと同様に処理する
         raise Http404("問題番号がただしくありません。")
@@ -149,7 +149,7 @@ def answer(request, exam_id, number):
             question=question)
         if request.method == "POST":
             if number < total:
-                # number = number + 1 として次の試験にリダイレクト。number==10でresultにリダイレト
+                # number = number + 1 として次の試験にリダイレクト。number==totalでresultにリダイレト
                 return redirect("mymath:exam", exam_id=exam_id, number= number + 1)
             if number == total:
                 return redirect("mymath:result", exam_id=exam_id)
@@ -161,11 +161,12 @@ def answer(request, exam_id, number):
 
 def result(request, exam_id):
     exam = Exam.objects.get(id=exam_id)
+    questions = Question.objects.filter(exam=exam) #examの問題をリストとしてquestionsとして取得
     # 未ログインユーザーの処理
     if not request.user.is_authenticated:
         session_exam = request.session["exam"]
         if not session_exam:
-            redirect("mymath:exam", exam_id=exam_id, number=1)
+            return redirect("mymath:exam", exam_id=exam_id, number=1)
         correct_num = 0
         for _, correct in session_exam["answer_correct"].items():
             correct_num += int(correct)
@@ -181,12 +182,14 @@ def result(request, exam_id):
         # useranswer も同様にuseranswer.question.numberをネストで作成。
         # sessionのキーはstrになっていることに注意
         useranswers = []
-        for i in range(1, 11):
-            useranswers.append({
-                "correct": session_exam["answer_correct"][str(i)],
-                "question":{
-                    "number":i}
+        for question in questions:
+            key = str(question.number)
+            if key in session_exam["answer_correct"]:
+                useranswers.append({
+                    "correct": session_exam["answer_correct"][key],
+                    "question": {"number": question.number}
                 })
+                
         return render(request, "mymath/result.html",
                 {"user_result": user_result,
                  "useranswers":useranswers})
