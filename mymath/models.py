@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db import transaction
+
 
 
 
@@ -61,15 +61,14 @@ class Question(models.Model):
     def save(self, *args, **kwargs):
         # number を連番で取得する
         if self.pk is None:
-            with transaction.atomic():
-                last = Question.objects.filter(
-                    exam=self.exam
-                ).order_by("-number").first()
-                if not last:
-                    self.number =1
-                else:
-                    self.number = last.number + 1
-                super().save(*args, **kwargs)
+            last = Question.objects.filter(
+                exam=self.exam
+            ).order_by("-number").first()
+            if not last:
+                self.number =1
+            else:
+                self.number = last.number + 1
+            super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
     
