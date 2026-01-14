@@ -134,7 +134,7 @@ def answer(request, exam_id, number):
         
         if request.method == "POST":
             if number < total:
-                # number = number + 1 として次の試験にリダイレクト。number==10でresultにリダイレト
+                # number = number + 1 として次の試験にリダイレクト。number==total (len(questions))でresultにリダイレト
                 return redirect("mymath:exam", exam_id=exam_id, number= number + 1)
             if number == total:
                 return redirect("mymath:result", exam_id=exam_id)
